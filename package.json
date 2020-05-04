@@ -1,0 +1,20 @@
+{
+  "name": "sshbook",
+  "version": "1.0.0",
+  "description": "Simple SSH config reader",
+  "main": "index.js",
+  "dependencies": {
+    "cross-spawn": "^7.0.2",
+    "ssh-config": "^4.0.2"
+  },
+  "devDependencies": {
+    "electron": "^8.2.5",
+    "electron-packager": "^14.2.1"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build-osx": "electron-packager . SSHBook --platform darwin --icon ./assets/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
+  },
+  "author": "Marjan",
+  "license": "MIT"
+}
