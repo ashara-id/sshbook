@@ -8,22 +8,27 @@ The SSH bookmarks app. Lightweight systemtray application for quick access to th
 * Node.js 8.16.0
 * npm 6.4.1
 
+### Run & Build
+* Run project: `npm start`
+* Create distribution package: `npm run build-osx`
+
 ## Features
-* Read user’s SSH config file
-* Access menu to launch shell with SSH command
+* Read and create bookmarks from user’s SSH config file (~/.ssh/config)
+* Read and create bookmarks from system-wide SSH config file (/etc/ssh/ssh_config)
+* Access systemtray menu to launch shell and execute SSH command
+* Default group separator is "__" and default category separator is "_"
+* Group and category details: First part of hostname is group and second part is category, the rest is the systemtray submenu name
 
 ## Todo
-* Read system-wine SSH config file
-* Group and environment. Use the current group as title and second part as environment
-* Group and environment aliases
-* About software
-* Icon
-* Item aliases
 * Preferences
     * Option to beautify name
-    * Option to use custom separator (underscore, dash)
+    * Option to use custom separator
     * SSH config locations with button to open the file
+* Group and category aliases
+* Refactore project structure
+* About software
+* Remake icon
 * Ignore list
 
 ## Known Issues
-* Duplicate shell for first lauch. Possible solution: Check shell status and use the first window if there is no open shell detected.
+* Nah

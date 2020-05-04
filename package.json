@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "cross-spawn": "^7.0.2",
+    "lodash": "^4.17.15",
     "ssh-config": "^4.0.2"
   },
   "devDependencies": {
@@ -13,8 +14,31 @@
   },
   "scripts": {
     "start": "electron .",
-    "build-osx": "electron-packager . SSHBook --platform darwin --icon ./assets/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
+    "build-osx": "electron-packager . 'SSH Book' --platform darwin --icon ./assets/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
   },
   "author": "Marjan",
-  "license": "MIT"
+  "license": "MIT",
+  "productName": "SSH Book",
+  "build": {
+    "app-bundle-id": "id.ashara.app.sshbook",
+    "app-category-type": "public.app-category.utilities",
+    "osx": {
+      "title": "SSH Book",
+      "icon": "assets/sshbooktray.512x512.icns",
+      "contents": [
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file",
+          "path": "computed path to artifact, do not specify it - will be overwritten"
+        }
+      ]
+    }
+  }
 }
