@@ -1,12 +1,23 @@
 const SSHConfig = require('ssh-config');
 const fs = require('fs');
+const _ = require('lodash');
+const settings = require('electron-settings');
 
 class SSHConfigReader {
-    constructor(config, groupSeparator, categorySeparator) {
+    constructor(config) {
         this.items = [];
         this.config = config;
-        this.groupSeparator = groupSeparator ? groupSeparator : '__';
-        this.categorySeparator = categorySeparator ? categorySeparator : '_';
+        this.groupSeparator = settings.has('group-delimiter') ? settings.get('group-delimiter') : '__';
+        this.categorySeparator = settings.has('category-delimiter') ? settings.get('category-delimiter') : '_';
+        this.aliases = settings.has('aliases') ? settings.get('aliases') : {};
+        this.ignoreList = [];
+        this.beautify = settings.has('beautify') ? settings.get('beautify') : true;
+
+        let ignores = settings.has('ignore-list') ? settings.get('ignore-list') : [];
+        for (let i in ignores) {
+            this.ignoreList.push(ignores[i].toLowerCase());
+        }
+
         this._readConfig();
     }
 
@@ -20,7 +31,10 @@ class SSHConfigReader {
             if (confFile) {
                 const sysConfig = SSHConfig.parse(confFile.toString());
                 for(var i in sysConfig) {
-                    if (!sysConfig[i].value || sysConfig[i].value==='*') continue;
+                    if (!sysConfig[i].value || sysConfig[i].value==='*' || 
+                        this.ignoreList.includes(sysConfig[i].value.toLowerCase())) {
+                        continue;
+                    }
                     let sshItem = this._getItem(sysConfig[i].value);
                     this.items.push(sshItem);
                 }
@@ -47,11 +61,23 @@ class SSHConfigReader {
             }
         }
         return {
-            group: group,
-            category: category,
-            name: name,
+            group: this._getBeautyName(group),
+            category: this._getBeautyName(category),
+            name: this._getBeautyName(name),
             hostName: hostName
         };
+    }
+
+    _getBeautyName(key) {
+        if (_.has(this.aliases, key.toLowerCase())) {
+            return this.aliases[key];
+        }
+        return this.beautify ? this._beautify(key) : key;
+    }
+
+    _beautify(str) {
+        str = str.replace(/_+/g, ' ');
+        return str.replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
     }
 }
 
