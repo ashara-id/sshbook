@@ -25,7 +25,6 @@ The SSH bookmarks app. Lightweight systemtray application for quick access to th
     * Option to use custom separator
     * SSH config locations with button to open the file
 * Group and category aliases
-* Refactore project structure
 * About software
 * Remake icon
 * Ignore list

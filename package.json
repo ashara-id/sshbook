@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "electron .",
-    "build-osx": "electron-packager . 'SSH Book' --platform darwin --icon ./assets/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
+    "build-osx": "electron-packager . 'SSH Book' --platform darwin --icon ./assets/icons/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
   },
   "author": "Marjan",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "app-category-type": "public.app-category.utilities",
     "osx": {
       "title": "SSH Book",
-      "icon": "assets/sshbooktray.512x512.icns",
+      "icon": "assets/icons/sshbooktray.512x512.icns",
       "contents": [
         {
           "x": 410,
