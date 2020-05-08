@@ -20,13 +20,13 @@ const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
     app.quit();
 } else {
-    app.on('ready', function(){
-        app.dock.hide();
-        new Preferences(); // Set the default user preference
+    app.on('ready', function() {
+        if (!_isDev()) app.dock.hide();
+        new Preferences(); // Set the default user preferences
         _createSystemtray();
     });
 
-    app.on('window-all-closed', function () {
+    app.on('window-all-closed', function() {
         // Do nothing
     });
 }
@@ -49,7 +49,7 @@ _getSystemtrayTempate = () => {
     menus.push({label: 'SSH Book', enabled: false});
     //menus.push({role: 'about'});
     menus.push({label: 'Preferences...', click: function() {
-        _openPopupWindow("src/preferences.html")
+        _openPopupWindow("src/preferences.html");
     }});
     menus.push({type: 'separator'});
     menus = _.concat(menus, sshMenus)
@@ -76,10 +76,14 @@ _openPopupWindow = (html) => {
     preferenceWin.loadURL(path.join('file://', __dirname, html));
 
     preferenceWin.once('ready-to-show', () => {
-        preferenceWin.show()
+        preferenceWin.show();
     });
 
     preferenceWin.on('closed', () => {
         preferenceWin = null;
     });
+}
+
+_isDev = () => {
+    return process.argv && process.argv.length > 1 && process.argv[2] === '--dev'
 }

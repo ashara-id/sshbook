@@ -14,8 +14,8 @@
     "electron-packager": "^14.2.1"
   },
   "scripts": {
-    "start": "electron .",
-    "build-osx": "electron-packager . 'SSH Book' --platform darwin --icon ./assets/icons/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist"
+    "start": "electron . --dev",
+    "build-osx": "electron-packager . 'SSH Book' --platform darwin --icon ./assets/icons/sshbooktray.512x512.icns --out ./dist --overwrite --extend-info ./assets/Info.plist --asar --prune"
   },
   "author": "Marjan",
   "license": "MIT",

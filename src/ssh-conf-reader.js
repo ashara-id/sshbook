@@ -76,7 +76,7 @@ class SSHConfigReader {
     }
 
     _beautify(str) {
-        str = str.replace(/_+/g, ' ');
+        str = str.replace(/[_-]+/g, ' ');
         return str.replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
     }
 }
