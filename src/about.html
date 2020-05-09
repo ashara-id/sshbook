@@ -1,37 +1,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-                margin: 0;
-            }
-            body * {
-                margin-top: 0;
-            }
-            body *:first-child {
-                margin-top: 12px;
-            }
-            body *:not(:last-child) {
-                margin-bottom: 8px;
-            }
-            .name {
-                font-weight: 700;
-            }
-            .version,
-            .copyright {
-                font-size: 0.5946142301em;
-            }
-        </style>
+        <link rel="stylesheet" href="../assets/stylesheets/about.css" />
     </head>
     <body>
         <img class="icon" id="about-icon" src="../assets/icons/sshbooktray.512x512.png" width="64" />
         <p class="name" id="about-name"></p>
         <p class="version" id="about-version"></p>
-        <p class="copyright" id="about-copyright"></p>
+        <p class="copyright">&copy; <span id="about-copyright"></span></p>
     </body>
     <script>
         const About = require('./about');

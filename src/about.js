@@ -2,7 +2,7 @@ const electron = require('electron');
 
 class About {
     constructor() {
-        this.copyright = '&copy;ashara.id';
+        this.copyright = 'ashara.id';
     }
 
     init() {
