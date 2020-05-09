@@ -46,8 +46,10 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
 ## Todo
 * Linux support
 * First release
-* Download page
 * Windows support
+* Download page
+* Auto update
+* Crash reporting
 * Remake preferences window
 * Custom order with alias numbering
 * SSH config editor

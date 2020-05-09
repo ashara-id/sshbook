@@ -54,8 +54,8 @@ _getSystemtrayTempate = () => {
             id: 'about',
             html: "src/about.html",
             title: 'About ' + app.name,
-            width: 258,
-            height: 158,
+            width: 300,
+            height: 175,
             useContentSize: true,
             center: true,
             backgroundColor: '#ececec'
@@ -78,7 +78,7 @@ _getSystemtrayTempate = () => {
 
 _openWindow = (options) => {
     let win = wins[options.id];
-    if (win) {
+    if (typeof win!=='undefined' && win) {
         win.show();
         return;
     }
@@ -104,8 +104,10 @@ _openWindow = (options) => {
     });
 
     win.on('closed', () => {
-        win = null;
+        wins[options.id] = null;
     });
+
+    wins[options.id] = win;
 }
 
 _isDev = () => {
