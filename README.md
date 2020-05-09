@@ -42,13 +42,13 @@ The SSH bookmarks app. Lightweight systemtray application for quick access to th
 * Create macOS distribution package: `npm run build-osx`
 
 ## Todo
-* About software
 * Remake preferences window
 * First release
 * Download page
 * Linux support
 * Windows support
 * Ignore hostname by prefix
+* Custom order with alias numbering
 * SSH config locations with button to open the file
 
 ## Known Issues

@@ -14,12 +14,15 @@ const isWindows = process.platform === 'win32';
 let tray;
 let macShhUserConfig = path.join(os.homedir(), '.ssh/config');
 let macShhSysConfig = '/etc/ssh/ssh_config';
-let preferenceWin;
+let wins = {};
 
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
+    console.info('Another ' + app.name + ' instance is currently running');
     app.quit();
 } else {
+    app.allowRendererProcessReuse = true;
+
     app.on('ready', function() {
         if (!_isDev()) app.dock.hide();
         new Preferences(); // Set the default user preferences
@@ -36,7 +39,7 @@ _createSystemtray = () => {
     const ctxMenu = Menu.buildFromTemplate(systemtrayTempate);
     tray = new Tray(trayIcon);
     tray.setContextMenu(ctxMenu);
-    tray.setToolTip('SSH Book');
+    tray.setToolTip(app.name);
 }
 
 _getSystemtrayTempate = () => {
@@ -46,10 +49,25 @@ _getSystemtrayTempate = () => {
     let sshMenus = new SSHHostMenu(sshItems, isWindows).getTemplate();
 
     let menus = [];
-    menus.push({label: 'SSH Book', enabled: false});
-    //menus.push({role: 'about'});
+    menus.push({label: 'About ' + app.name, click: function() {
+        _openWindow({
+            id: 'about',
+            html: "src/about.html",
+            title: 'About ' + app.name,
+            width: 258,
+            height: 158,
+            useContentSize: true,
+            center: true,
+            backgroundColor: '#ececec'
+        });
+    }});
     menus.push({label: 'Preferences...', click: function() {
-        _openPopupWindow("src/preferences.html");
+        _openWindow({
+            id: 'preferences',
+            html: "src/preferences.html",
+            title: 'Preferences',
+            backgroundColor: '#ececec'
+        });
     }});
     menus.push({type: 'separator'});
     menus = _.concat(menus, sshMenus)
@@ -58,29 +76,35 @@ _getSystemtrayTempate = () => {
     return menus;
 }
 
-_openPopupWindow = (html) => {
-    if (preferenceWin) {
-        preferenceWin.show();
+_openWindow = (options) => {
+    let win = wins[options.id];
+    if (win) {
+        win.show();
         return;
     }
-    preferenceWin = new BrowserWindow({
+    let resizable = _isDev();
+    let winOption = {
         show: false,
         minimizable: false,
         fullscreenable: false,
         maximizable: false,
-        resizable: false,
+        resizable: resizable,
         webPreferences: {
             nodeIntegration: true
         }
-    });
-    preferenceWin.loadURL(path.join('file://', __dirname, html));
+    };
+    for (let [key, value] of Object.entries(options)) {
+        winOption[key] = value;
+    }
+    win = new BrowserWindow(winOption);
+    win.loadURL(path.join('file://', __dirname, options.html));
 
-    preferenceWin.once('ready-to-show', () => {
-        preferenceWin.show();
+    win.once('ready-to-show', () => {
+        win.show();
     });
 
-    preferenceWin.on('closed', () => {
-        preferenceWin = null;
+    win.on('closed', () => {
+        win = null;
     });
 }
 
