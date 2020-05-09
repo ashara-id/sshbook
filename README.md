@@ -1,5 +1,5 @@
 # SSH Book
-The SSH bookmarks app. Lightweight systemtray application for quick access to the SSH configuration files. Help you remember the SSH configurations.
+The lightweight SSH bookmarks app. Help you remember your SSH configs.
 * Owner: ashara.id
 * Contact: marjan@ashara.id
 * Version: 1.0.0
@@ -8,24 +8,26 @@ The SSH bookmarks app. Lightweight systemtray application for quick access to th
 * Read and create bookmarks from user’s SSH config file (`~/.ssh/config`)
 * Read and create bookmarks from system-wide SSH config file (`/etc/ssh/ssh_config`)
 * Access systemtray menu to launch shell and execute SSH command
-* Grouping support:
-    * Default group separator is double underscore (`__`) and default category separator is single underscore (`_`)
-    * Group and category details: First part of hostname is group and second part is category, the rest is the systemtray submenu name
+* Group and category support
 * Use custom separator
-* Beautify the names
-* Words alias to translate the names
 * Ignore host names
+* Global host (`*`) is always ignored
+* Option to beautify the names
+* Words alias to translate the names
 
 ## Preferences
 * Default hostname format: `client__dev_web`, which is `client ` as the group name, `dev` as the category name, and the rest is the item name
 * Alternative hostname format without category: `client__cms`, which is `client ` as the group name and `cms` as the item name
 * Default group delimiter is double underscore (`__`)
 * Default category delimiter is single underscore (`_`)
+* Alias uses comma separator format and use line break for each alias items. Sample of alias: "`dev, Development`", where `dev` is the name and `Development` is the replacement.
 * Default aliases:
     * `dev` will be translated to `Development`
     * `stg` will be translated to `Staging`
     * `prod` will be translated to `Production`
-* Global host (`*`) is always ignored
+* Igone list supports full host name and prefix. Uses line break or comma for each items.
+    * Given `client_x_old`, ignore host with name `client_x_old`
+    * Given `client1_*`, ignore hosts that starts with `client1_`
 
 ## App Support & Download
 * Download executable file at download page
@@ -42,14 +44,13 @@ The SSH bookmarks app. Lightweight systemtray application for quick access to th
 * Create macOS distribution package: `npm run build-osx`
 
 ## Todo
-* Remake preferences window
+* Linux support
 * First release
 * Download page
-* Linux support
 * Windows support
-* Ignore hostname by prefix
+* Remake preferences window
 * Custom order with alias numbering
-* SSH config locations with button to open the file
+* SSH config editor
 
 ## Known Issues
 Nah

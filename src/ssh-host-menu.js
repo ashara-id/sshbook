@@ -14,7 +14,7 @@ class SSHHostMenu {
     }
 
     _prepare() {
-        var _this = this;
+        let _this = this;
         let grouped = _.groupBy(this.sshItems, 'group');
         let orderedGroup = {};
         Object.keys(grouped).sort().forEach(function(key) {
@@ -38,7 +38,7 @@ class SSHHostMenu {
                 });
             }
 
-            var categorized = _.pickBy(groupedGroupItems, function(value, key) {
+            let categorized = _.pickBy(groupedGroupItems, function(value, key) {
                 return key!=='*';
             });
             if (!_.isEmpty(categorized)) {
@@ -47,7 +47,7 @@ class SSHHostMenu {
                     orderedCategorized[key] = categorized[key];
                 });
                 for (let [categoryKey, categoryItems] of Object.entries(orderedCategorized)) {
-                    var menuCategoryItems = [];
+                    let menuCategoryItems = [];
                     let orderedCatItems = _.sortBy(categoryItems, ['name']);
                     _.forEach(orderedCatItems, function(item) {
                         menuCategoryItems.push({

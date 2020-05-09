@@ -11,11 +11,17 @@ class SSHConfigReader {
         this.categorySeparator = settings.has('category-delimiter') ? settings.get('category-delimiter') : '_';
         this.aliases = settings.has('aliases') ? settings.get('aliases') : {};
         this.ignoreList = [];
+        this.prefixIgnoreList = [];
         this.beautify = settings.has('beautify') ? settings.get('beautify') : true;
 
         let ignores = settings.has('ignore-list') ? settings.get('ignore-list') : [];
         for (let i in ignores) {
-            this.ignoreList.push(ignores[i].toLowerCase());
+            let ignore = ignores[i].toLowerCase();
+            if (ignore.endsWith("*")) {
+                this.prefixIgnoreList.push(ignore.slice(0, -1));
+            } else {
+                this.ignoreList.push(ignore);
+            }
         }
 
         this._readConfig();
@@ -29,13 +35,13 @@ class SSHConfigReader {
         if (fs.existsSync(this.config)) {
             const confFile = fs.readFileSync(this.config, 'utf8');
             if (confFile) {
-                const sysConfig = SSHConfig.parse(confFile.toString());
-                for(var i in sysConfig) {
-                    if (!sysConfig[i].value || sysConfig[i].value==='*' || 
-                        this.ignoreList.includes(sysConfig[i].value.toLowerCase())) {
+                const sysConfigs = SSHConfig.parse(confFile.toString());
+                for(let i in sysConfigs) {
+                    let sysConfigValue = sysConfigs[i].value
+                    if (this._shouldIgnore(sysConfigValue)) {
                         continue;
                     }
-                    let sshItem = this._getItem(sysConfig[i].value);
+                    let sshItem = this._getItem(sysConfigValue);
                     this.items.push(sshItem);
                 }
             }
@@ -78,6 +84,18 @@ class SSHConfigReader {
     _beautify(str) {
         str = str.replace(/[_-]+/g, ' ');
         return str.replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+    }
+
+    _shouldIgnore(str) {
+        if (!str || str==='*') return true;
+        str = str.toLowerCase();
+        if (this.ignoreList.includes(str)) return true;
+        for (let i in this.prefixIgnoreList) {
+            if (str.startsWith(this.prefixIgnoreList[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
