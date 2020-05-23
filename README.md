@@ -1,7 +1,7 @@
 # SSH Book
 The lightweight SSH bookmarks app. Help you remember your SSH configs.
 * Owner: ashara.id
-* Contact: marjan@ashara.id
+* Contact: support@ashara.id
 * Version: 1.0.0
 
 ## Features
@@ -18,8 +18,8 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
 ## Preferences
 * Default hostname format: `client__dev_web`, which is `client ` as the group name, `dev` as the category name, and the rest is the item name
 * Alternative hostname format without category: `client__cms`, which is `client ` as the group name and `cms` as the item name
-* Default group delimiter is double underscore (`__`)
-* Default category delimiter is single underscore (`_`)
+* Default group separator is double underscore (`__`)
+* Default category separator is single underscore (`_`)
 * Alias uses comma separator format and use line break for each alias items. Sample of alias: "`dev, Development`", where `dev` is the name and `Development` is the replacement.
 * Default aliases:
     * `dev` will be translated to `Development`
@@ -29,30 +29,31 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
     * Given `client_x_old`, ignore host with name `client_x_old`
     * Given `client1_*`, ignore hosts that starts with `client1_`
 
-## App Support & Download
-* Download executable file at download page
-* Supported platforms: macOS
-* Supported languages: English
+## Supported Operating Systems
+* macOS Catalina, tested on version 10.15.4
+
+## How To Use
+### macOS
+* Download the "SSH Book-darwin-x64.zip" and extract the contents
+* Move the "SSH Book.app" to the Applications
+* Open the "SSH Book.app"
 
 ## Development Setup
 ### Requirements
-* Node.js 8.16.0
-* npm 6.4.1
+* Node.js v14.2.0
+* npm 6.14.4
 
 ### Run & Build
 * Run project: `npm start`
 * Create macOS distribution package: `npm run build-osx`
 
 ## Todo
-* Linux support
 * First release
+* Linux support
 * Windows support
-* Download page
+* Installer
 * Auto update
 * Crash reporting
 * Remake preferences window
-* Custom order with alias numbering
+* Ordering with alias number
 * SSH config editor
-
-## Known Issues
-Nah

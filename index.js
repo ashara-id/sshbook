@@ -8,8 +8,12 @@ const Preferences = require('./src/preferences');
 
 const {app, BrowserWindow, Tray, Menu} = electron;
 
-const trayIcon = path.join(__dirname, 'assets/icons/sshbooktray.16x16.png');
-const isWindows = process.platform === 'win32';
+const trayIcon = path.join(__dirname, 'assets/icons/sshbooktray.png');
+const taskbarIcon = path.join(__dirname, 'assets/icons/sshbook.png');
+const isMac = process.platform === 'darwin';
+const isLinux = process.platform === 'linux';
+//const isWindows = process.platform === 'win32';
+const homedir = app.getPath('home');
 
 let tray;
 let macShhUserConfig = path.join(os.homedir(), '.ssh/config');
@@ -24,7 +28,7 @@ if (!gotTheLock) {
     app.allowRendererProcessReuse = true;
 
     app.on('ready', function() {
-        if (!_isDev()) app.dock.hide();
+        if (!_isDev() && isMac) app.dock.hide();
         new Preferences(); // Set the default user preferences
         _createSystemtray();
     });
@@ -46,7 +50,7 @@ _getSystemtrayTempate = () => {
     let sysHosts = new SSHConfigReader(macShhSysConfig).getItems();
     let userHosts = new SSHConfigReader(macShhUserConfig).getItems();
     let sshItems = _.uniq(_.concat(sysHosts, userHosts));
-    let sshMenus = new SSHHostMenu(sshItems, isWindows).getTemplate();
+    let sshMenus = new SSHHostMenu(sshItems, homedir).getTemplate();
 
     let menus = [];
     menus.push({label: 'About ' + app.name, click: function() {
@@ -59,7 +63,7 @@ _getSystemtrayTempate = () => {
             useContentSize: true,
             center: true,
             backgroundColor: '#ececec'
-        });
+        }, true);
     }});
     menus.push({label: 'Preferences...', click: function() {
         _openWindow({
@@ -67,7 +71,7 @@ _getSystemtrayTempate = () => {
             html: "src/preferences.html",
             title: 'Preferences',
             backgroundColor: '#ececec'
-        });
+        }, true);
     }});
     menus.push({type: 'separator'});
     menus = _.concat(menus, sshMenus)
@@ -76,7 +80,7 @@ _getSystemtrayTempate = () => {
     return menus;
 }
 
-_openWindow = (options) => {
+_openWindow = (options, withoutMenu) => {
     let win = wins[options.id];
     if (typeof win!=='undefined' && win) {
         win.show();
@@ -84,6 +88,7 @@ _openWindow = (options) => {
     }
     let resizable = _isDev();
     let winOption = {
+        icon: taskbarIcon,
         show: false,
         minimizable: false,
         fullscreenable: false,
@@ -91,13 +96,19 @@ _openWindow = (options) => {
         resizable: resizable,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        autoHideMenuBar: withoutMenu
     };
     for (let [key, value] of Object.entries(options)) {
         winOption[key] = value;
     }
     win = new BrowserWindow(winOption);
     win.loadURL(path.join('file://', __dirname, options.html));
+    if (withoutMenu) {
+        win.setMenu(null);
+        win.removeMenu();
+        win.setMenuBarVisibility(false);
+    }
 
     win.once('ready-to-show', () => {
         win.show();

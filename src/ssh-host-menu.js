@@ -1,11 +1,15 @@
 const _ = require('lodash');
 const spawn = require('cross-spawn');
+const settings = require('electron-settings');
+const isMac = process.platform === 'darwin';
+const isLinux = process.platform === 'linux';
 
 class SSHHostMenu {
-    constructor(sshItems, isWindows) {
+    constructor(sshItems, homeDir) {
         this.template = [];
         this.sshItems = sshItems;
-        this.isWindows = isWindows;
+        this.openInTheSameWindow = settings.get('same-window');
+        this.homeDir = homeDir;
         this._prepare();
     }
 
@@ -66,21 +70,47 @@ class SSHHostMenu {
     }
 
     _executeSSH(command, options) {
-        if (!this.isWindows) {
-            let completeCommand = `
-            if application "Terminal" is running then
-                tell application "Terminal"
-                    do script "${command}"
-                    activate
-                end tell
-            else
-                tell application "Terminal"
-                    do script "${command}" in window 1
-                    activate
-                end tell
-            end if
+        if (isMac) {
+            let sameWinCommand = `
+                if application "Terminal" is running then
+                    tell application "Terminal"
+                        if busy of window 1 then
+                            do script "${command}"
+                        else
+                            do script "${command}" in window 1
+                        end if
+                        activate
+                    end tell
+                else
+                    tell application "Terminal"
+                        do script "${command}" in window 1
+                        activate
+                    end tell
+                end if
             `;
-          return spawn('osascript', ['-e', completeCommand]);
+            
+            let newWinCommand = `
+                if application "Terminal" is running then
+                    tell application "Terminal"
+                        do script "${command}"
+                        activate
+                    end tell
+                else
+                    tell application "Terminal"
+                        do script "${command}" in window 1
+                        activate
+                    end tell
+                end if
+            `;
+
+            let sshCommand = this.openInTheSameWindow ? sameWinCommand : newWinCommand;
+            let result = spawn('osascript', ['-e', sshCommand]);
+            result.on('close', code => {
+                if (code!==0) {
+                    console.log("Error:" + code);
+                }
+            });
+            return;
         }
         console.log('Operating system not supported');
     }

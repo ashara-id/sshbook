@@ -12,6 +12,7 @@ class Preferences {
         });
         if (!settings.has('ignore-list')) settings.set('ignore-list', []);
         if (!settings.has('beautify')) settings.set('beautify', true);
+        if (!settings.has('same-window')) settings.set('same-window', false);
     }
 
     init() {
@@ -21,6 +22,7 @@ class Preferences {
         let $aliases = document.querySelector('#aliases');
         let $ignoreList = document.querySelector('#ignore-list');
         let $beautify = document.querySelector('#beautify');
+        let $sameWindow = document.querySelector('#same-window');
         let $save = document.querySelector('#save');
 
         $groupDelimiter.value = settings.get('group-delimiter');
@@ -30,6 +32,9 @@ class Preferences {
         if (settings.get('beautify')) {
             $beautify.checked = true;
         }
+        if (settings.get('same-window')) {
+            $sameWindow.checked = true;
+        }
 
         let _this = this;
         $save.addEventListener('click', function() {
@@ -38,6 +43,7 @@ class Preferences {
             settings.set('aliases', _this._parseAliases($aliases.value));
             settings.set('ignore-list', _this._parseIgnoreList($ignoreList.value));
             settings.set('beautify', $beautify.checked);
+            settings.set('same-window', $sameWindow.checked);
             
             app.relaunch();
             app.exit();
