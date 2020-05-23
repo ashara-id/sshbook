@@ -4,6 +4,12 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
 * Contact: support@ashara.id
 * Version: 1.0.0
 
+<p>
+<img src="https://user-images.githubusercontent.com/4292994/82739795-502bbe80-9d75-11ea-9d44-58862e37440c.png">
+<img src="https://user-images.githubusercontent.com/4292994/82739968-f4623500-9d76-11ea-9a67-5148e4af1bd4.png">
+<img src="https://user-images.githubusercontent.com/4292994/82739972-0348e780-9d77-11ea-8e8c-db93a720ed97.png">
+</p>
+
 ## Features
 * Read and create bookmarks from user’s SSH config file (`~/.ssh/config`)
 * Read and create bookmarks from system-wide SSH config file (`/etc/ssh/ssh_config`)
@@ -32,7 +38,7 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
 ## Supported Operating Systems
 * macOS Catalina, tested on version 10.15.4
 
-## How To Use
+## How To Install
 ### macOS
 * Download the "SSH Book-darwin-x64.zip" and extract the contents
 * Move the "SSH Book.app" to the Applications
@@ -40,15 +46,15 @@ The lightweight SSH bookmarks app. Help you remember your SSH configs.
 
 ## Development Setup
 ### Requirements
-* Node.js v14.2.0
+* Node.js v10.20.1
 * npm 6.14.4
+* Electron 8.3.0
 
 ### Run & Build
 * Run project: `npm start`
 * Create macOS distribution package: `npm run build-osx`
 
 ## Todo
-* First release
 * Linux support
 * Windows support
 * Installer
